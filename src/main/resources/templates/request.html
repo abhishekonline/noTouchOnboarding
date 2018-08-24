@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>No touch Onboarding</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>No touch onboarding request page</h1>
+<form action="#" th:action="@{/requestJenkins}" th:object="${request}" method="post">
+    <p>org/repo: <input type="text" th:field="*{orgRepo}" /></p>
+    <p>git token: <input type="text" th:field="*{gitToken}" /></p>
+    <p>git token: <input type="text" th:field="*{dockerToken}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>
