@@ -3,10 +3,12 @@ package hello;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Controller
 public class RequestController {
@@ -17,11 +19,16 @@ public class RequestController {
         return "request";
     }
 
+    @GetMapping("/getstatus")
+    public String getStatus(Model model) {
+        model.addAttribute("status", new Status());
+        return "getStatus";
+    }
 
     @RequestMapping(value = "/requestJenkins")
-    String getIdByValue(@RequestParam("orgRepo") String orgRepo,
+    String getIdByValue(@RequestParam("org") String orgRepo,
                         @RequestParam("gitToken") String gitToken,
-                        @RequestParam("dockerToken") String dockerToken,
+                        @RequestParam(value = "default", required = false) String dockerToken,
                         Model model){
         String url = requestJenkins(orgRepo,gitToken,dockerToken);
         model.addAttribute("url", url);
@@ -32,7 +39,7 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/status")
-    String getIdByValue(@RequestParam("url") String url, Model model){
+    String getIdByValue(@RequestParam("org") String url, Model model){
         String status = getStatus(url);
         model.addAttribute("status", status);
         model.addAttribute("url", url);
@@ -41,15 +48,54 @@ public class RequestController {
         return "status";
     }
 
-    public String getStatus(String url){
 
+    public String getStatus(String org){
+        try{
+
+            String[] command = { "bash","src/main/resources/scripts/statusScript.sh"};
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    process.getInputStream()));
+            process.waitFor();
+            int exitStatus = process.exitValue();
+            //Script status non zero, means it is processing
+            if(exitStatus != 0){
+
+                return "status is pending";
+            }else{
+            //Script status  zero, means it will spit jenkins url
+                String s;
+                while ((s = reader.readLine()) != null) {
+                    System.out.println("Script output: " + s);
+                    return s;
+                }
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //calculate status
         return "pending";
     }
 
     public String requestJenkins(String orgRepo, String gitToken, String dockerToken){
         System.out.println(orgRepo+"\n"+gitToken+"\n"+ dockerToken);
+        try{
+
+            String[] command = { "bash","src/main/resources/scripts/requestScript.sh"};
+            Process process = Runtime.getRuntime().exec(command);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    process.getInputStream()));
+            String s;
+            while ((s = reader.readLine()) != null) {
+                System.out.println("Script output: " + s);
+            }
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
         //request url
-        return "fakeJenkinsUrl";
+        return "Request placed";
     }
 }

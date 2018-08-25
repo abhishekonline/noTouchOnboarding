@@ -2,7 +2,7 @@ package hello;
 
 public class Request {
 
-    private String orgRepo;
+    private String org;
     private String gitToken;
     private String dockerToken;
 
@@ -14,12 +14,12 @@ public class Request {
         this.dockerToken = dockerToken;
     }
 
-    public String getOrgRepo() {
-        return orgRepo;
+    public String getOrg() {
+        return org;
     }
 
-    public void setOrgRepo(String orgRepo) {
-        this.orgRepo = orgRepo;
+    public void setOrg(String orgRepo) {
+        this.org = org;
     }
 
     public String getGitToken() {

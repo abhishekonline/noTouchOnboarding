@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>No touch Onboarding</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Know your Jenkins Status</h1>
+<form action="#" th:action="@{/status}" th:object="${status}" method="post">
+    <p>org: <input type="text" th:field="*{org}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

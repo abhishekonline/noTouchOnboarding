@@ -5,8 +5,9 @@
 
 </head>
 <body>
-<p th:text="'status page'"/>
-<p th:text="'Jenkins url : '+${url} +' is in  ' + ${status} + ' state'" />
+<h3>Status </h3>
+<br>
+<p th:text="'Status : ' + ${status}" />
 <a href="/welcome"> request another Jenkins</a>
 </body>
 </html>
