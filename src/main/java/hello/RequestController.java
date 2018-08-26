@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.IOException;
+
 
 @Controller
 public class RequestController {
@@ -27,24 +28,23 @@ public class RequestController {
 
     @RequestMapping(value = "/requestJenkins")
     String getIdByValue(@RequestParam("org") String orgRepo,
+                        @RequestParam("ciname") String uniquename,
                         @RequestParam("gitToken") String gitToken,
                         @RequestParam(value = "default", required = false) String dockerToken,
                         Model model){
-        String url = requestJenkins(orgRepo,gitToken,dockerToken);
+        String url = requestJenkins(orgRepo,uniquename,gitToken,dockerToken);
         model.addAttribute("url", url);
 
         System.out.println("url is "+url);
-        //return getStatus(url);
         return "jenkins";
     }
 
     @RequestMapping(value = "/status")
-    String getIdByValue(@RequestParam("org") String url, Model model){
+    String getIdByValue(@RequestParam("ciname") String url, Model model){
         String status = getStatus(url);
         model.addAttribute("status", status);
         model.addAttribute("url", url);
         System.out.println("url is "+url + " and its status is " +status);
-        //return getStatus(url);
         return "status";
     }
 
@@ -58,9 +58,9 @@ public class RequestController {
                     process.getInputStream()));
             process.waitFor();
             int exitStatus = process.exitValue();
+
             //Script status non zero, means it is processing
             if(exitStatus != 0){
-
                 return "status is pending";
             }else{
             //Script status  zero, means it will spit jenkins url
@@ -79,8 +79,8 @@ public class RequestController {
         return "pending";
     }
 
-    public String requestJenkins(String orgRepo, String gitToken, String dockerToken){
-        System.out.println(orgRepo+"\n"+gitToken+"\n"+ dockerToken);
+    public String requestJenkins(String org, String uniquename, String gitToken, String dockerToken){
+        System.out.println(org+"\n"+uniquename+"\n"+gitToken+"\n"+ dockerToken);
         try{
 
             String[] command = { "bash","src/main/resources/scripts/requestScript.sh"};

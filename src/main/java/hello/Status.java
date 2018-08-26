@@ -1,14 +1,14 @@
 package hello;
 
 public class Status {
-    public String getOrg() {
-        return org;
+    public String getciname() {
+        return ciname;
     }
 
-    public void setOrg(String org) {
-        this.org = org;
+    public void setciname(String ciname) {
+        this.ciname = ciname;
     }
 
-    private String org;
+    private String ciname;
 
 }

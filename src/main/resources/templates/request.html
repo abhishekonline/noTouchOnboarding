@@ -7,9 +7,9 @@
 <body>
 <h1>No touch onboarding request page</h1>
 <form action="#" th:action="@{/requestJenkins}" th:object="${request}" method="post">
-    <p>org/repo: <input type="text" th:field="*{org}" /></p>
-    <p>Git token: <input type="text" th:field="*{gitToken}" /></p>
-    <p>Docker token: <input type="text" th:field="*{dockerToken}" /></p>
+    <p>Org name: <input type="text" th:field="*{org}" placeholder="Github organisation name"/></p>
+    <p>CI Name: <input type="text" th:field="*{ciname}" placeholder="Desird CI name"/></p>
+    <p>Github token: <input type="text" th:field="*{gitToken}" placeholder="Github access token" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
