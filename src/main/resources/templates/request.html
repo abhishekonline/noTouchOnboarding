@@ -9,6 +9,7 @@
 <form action="#" th:action="@{/requestJenkins}" th:object="${request}" method="post">
     <p>Org name: <input type="text" th:field="*{org}" placeholder="Github organisation name"/></p>
     <p>CI Name: <input type="text" th:field="*{ciname}" placeholder="Desird CI name"/></p>
+    <p>Github User: <input type="text" th:field="*{gitUser}" placeholder="Github User" /></p>
     <p>Github token: <input type="text" th:field="*{gitToken}" placeholder="Github access token" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
