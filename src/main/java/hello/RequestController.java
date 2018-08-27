@@ -29,10 +29,11 @@ public class RequestController {
     @RequestMapping(value = "/requestJenkins")
     String getIdByValue(@RequestParam("org") String orgRepo,
                         @RequestParam("ciname") String uniquename,
+                        @RequestParam("gitUser") String gitUser,
                         @RequestParam("gitToken") String gitToken,
                         @RequestParam(value = "default", required = false) String dockerToken,
                         Model model){
-        String url = requestJenkins(orgRepo,uniquename,gitToken,dockerToken);
+        String url = requestJenkins(orgRepo,uniquename,gitUser,gitToken,dockerToken);
         model.addAttribute("url", url);
 
         System.out.println("url is "+url);
@@ -49,11 +50,17 @@ public class RequestController {
     }
 
 
-    public String getStatus(String org){
+    public String getStatus(String uniquename){
+        System.out.println("Status requested for CI"+uniquename+"\n");
+
         try{
 
             String[] command = { "bash","src/main/resources/scripts/statusScript.sh"};
-            Process process = Runtime.getRuntime().exec(command);
+            String[] envp = new String[1];
+
+            envp[0] = "CI_NAME=" + uniquename;
+
+            Process process = Runtime.getRuntime().exec(command, envp);
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
             process.waitFor();
@@ -79,12 +86,19 @@ public class RequestController {
         return "pending";
     }
 
-    public String requestJenkins(String org, String uniquename, String gitToken, String dockerToken){
-        System.out.println(org+"\n"+uniquename+"\n"+gitToken+"\n"+ dockerToken);
+    public String requestJenkins(String org, String uniquename, String gitUser, String gitToken, String dockerToken){
+        System.out.println("SFCI Onboarding requested for "+org+"\n"+uniquename+"\n"+gitUser+"\n"+gitToken+"\n"+ dockerToken);
         try{
 
             String[] command = { "bash","src/main/resources/scripts/requestScript.sh"};
-            Process process = Runtime.getRuntime().exec(command);
+            String[] envp = new String[4];
+
+            envp[0] = "CI_NAME=" + uniquename;
+            envp[1] = "GIT_ORG=" + org;
+            envp[2] = "GIT_USER=" + gitUser;
+            envp[3] = "GIT_TOKEN=" + gitToken;
+
+            Process process = Runtime.getRuntime().exec(command, envp);
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
             String s;

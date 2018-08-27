@@ -4,6 +4,7 @@ public class Request {
 
     private String org;
     private String ciname;
+    private String gitUser;
     private String gitToken;
     private String dockerToken;
 
@@ -22,6 +23,13 @@ public class Request {
     }
     public void setOrg(String orgRepo) {
         this.org = org;
+    }
+
+    public String getGitUser() {
+        return gitUser;
+    }
+    public void setGitUser(String gitUser) {
+        this.gitUser = gitUser;
     }
 
     public String getGitToken() {
