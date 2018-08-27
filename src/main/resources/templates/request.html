@@ -5,13 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>No touch onboarding request page</h1>
+<br>
+<hr>
+<h1 align="center">Get onboarded on to SFCI in 5 minutes </h1>
+<hr>
+<br>
+<div align="center">
 <form action="#" th:action="@{/requestJenkins}" th:object="${request}" method="post">
-    <p>Org name: <input type="text" th:field="*{org}" placeholder="Github organisation name"/></p>
-    <p>CI Name: <input type="text" th:field="*{ciname}" placeholder="Desird CI name"/></p>
-    <p>Github User: <input type="text" th:field="*{gitUser}" placeholder="Github User" /></p>
-    <p>Github token: <input type="text" th:field="*{gitToken}" placeholder="Github access token" /></p>
+    <p>Github Org name: <input type="text" th:field="*{org}" placeholder="Github organisation name"/></p>
+    <p>CI Name:         <input type="text" th:field="*{ciname}" placeholder="Desird CI name"/></p>
+    <p>Github User:     <input type="text" th:field="*{gitUser}" placeholder="Github User" /></p>
+    <p>Github token:    <input type="text" th:field="*{gitToken}" placeholder="Github access token" /></p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
+</div>
 </body>
 </html>
